@@ -1,0 +1,81 @@
+//
+//  SignUp.swift
+//  chat
+//
+//  Created by Emily Petroni on 1/20/20.
+//  Copyright © 2020 Emily Petroni. All rights reserved.
+//
+
+import UIKit
+import Firebase
+import FirebaseDatabase
+import FirebaseStorage
+import SwiftKeychainWrapper
+
+
+class SignUp: UIViewController {
+    
+  //  @IBOutlet weak var  usernameField: UITextField!
+    
+    @IBOutlet weak var firstName: UITextField!
+    
+    @IBOutlet weak var lastName: UITextField!
+    
+    
+    @IBOutlet weak var isCoach: UISwitch!
+    
+    @IBOutlet weak var signupButton: UIButton!
+    
+    var userUid: String!
+    
+    var emailField: String!
+    
+    var passwordField: String!
+    
+    var userIsCoach: Bool!
+    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        // Do any additional setup after loading the view.
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        
+        if let  _ = KeychainWrapper.standard.string(forKey: "uid") {
+            
+          performSegue(withIdentifier: "toMessages", sender: nil)
+        }
+    }
+    
+    @IBAction func signUpButton(_ sender: Any) {
+        Auth.auth().createUser(withEmail: emailField, password: passwordField, completion: {(user, error) in
+            
+            if error != nil {
+                
+                print("Cant Create User")
+                
+            } else {
+                
+                if let user = user {
+                    
+                    self.userUid  = user.user.uid
+                }
+               
+            }
+            
+            
+        })
+        
+        
+        
+    }
+    
+    @IBAction func cancel (_sender: AnyObject) {
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
+}
