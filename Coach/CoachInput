@@ -18,10 +18,7 @@ class CoachInput: UIViewController {
 
    var clientDB: DatabaseReference!
 
-   
-    
-    
-    
+
     @IBOutlet weak var clientName: UITextField!
     
     @IBOutlet weak var clientEmail: UITextField!
@@ -30,13 +27,15 @@ class CoachInput: UIViewController {
     
     @IBOutlet weak var clientHeight: UIPickerView!
     
+    @IBOutlet weak var clientWeight: UITextField!
+    
     @IBOutlet weak var clientShowDate: UIDatePicker!
   
     @IBOutlet weak var clientNotes: UITextField!
     
     @IBOutlet weak var saveClient: UIButton!
     
-    var ref:  DatabaseReference!
+    // var clientDB:  DatabaseReference!
     
     
     @IBAction func toCancel(_ sender: Any) {
@@ -50,13 +49,24 @@ class CoachInput: UIViewController {
         
         clientDB = Database.database(url: "https://myprepcoach-837c5-f207d.firebaseio.com/").reference()
         
-        let userData = ["clientName": self.clientName.text! as String??, "clientEmail": self.clientEmail.text! as String, "clientHeight" : self.clientHeight.text! as String,"clientShowDate": self.clientShowDate as String] as [String : Any]
+     
+        //need to fix this so it doesnt override every time
+    //    let clientEmailID = ["clientEmail": self.clientEmail.text! as String]
         
-        self.ref.child("Clients").setValue (userData)
+        let userData = ["clientName": self.clientName.text! as String,
+                        "clientEmail": self.clientEmail.text! as String,
+                        "clientWeight":  self.clientWeight.text! as String,
+                        "clientNotes": self.clientNotes.text! as String
+            //, "clientHeight" : self.clientHeight.UILabel! as String,
+            //"clientShowDate": self.clientShowDate as String
+            ] as [String : Any]
+        
+        //need to fix so knows to save to specific client
+        (self.clientDB.child("Clients").childByAutoID() as AnyObject).setValue(userData)
         
         print ("Client Add Successful")
         
-            //if coachOrClient == "Coach" {
-        self.performSegue(withIdentifier: "toMessage", sender: nil)
+           
+        self.performSegue(withIdentifier: "toClientList", sender: nil)
     }
 }
