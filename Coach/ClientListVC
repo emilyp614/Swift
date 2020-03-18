@@ -1,0 +1,58 @@
+//
+//  ClientListViewController.swift
+//  chat
+//
+//  Created by Emily Petroni on 3/18/20.
+//  Copyright © 2020 Emily Petroni. All rights reserved.
+//
+
+import UIKit
+
+class ClientListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+
+    let clientList: [String] = ["Day 1", "Day 2", "Day 3", "Day 4"] //need to change this to get list from Firebase
+    let colors = [UIColor.blue, UIColor.yellow, UIColor.magenta, UIColor.red]
+    let cellReuseIdentifier = "ClientCell"
+       
+       
+     //  @IBOutlet var WOtable: UITableView!
+       
+    @IBOutlet var ClientTable: UITableView!
+    
+       override func viewDidLoad() {
+           super.viewDidLoad()
+           ClientTable.tableFooterView = UIView()
+           ClientTable.rowHeight = 100
+       
+             //  tableView.delegate = self
+               //tableView.dataSource = self
+       }
+       
+           
+         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+
+           
+           return self.clientList.count
+       }
+           
+         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+         
+           let cell: ClientListTableCell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! ClientListTableCell
+           
+           //let imageName = UIImage(named: clientList[indexPath.row])
+           //var image: UIImage =
+          // cell.myImage.image = imageName
+           cell.clientLabel.text = self.clientList[indexPath.row]
+           //cell.myLabel.textAlignment = NSTextAlignment
+        
+           
+           
+          return cell
+
+        }
+       
+        func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+           print("You tapped cell number \(indexPath.row).")
+       }
+
+}
