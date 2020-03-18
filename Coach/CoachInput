@@ -62,7 +62,7 @@ class CoachInput: UIViewController {
             ] as [String : Any]
         
         //need to fix so knows to save to specific client
-        (self.clientDB.child("Clients").childByAutoID() as AnyObject).setValue(userData)
+        (self.clientDB.child("Clients").childByAutoId() as AnyObject).setValue(userData)
         
         print ("Client Add Successful")
         
