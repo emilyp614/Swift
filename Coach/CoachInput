@@ -16,13 +16,47 @@ import FirebaseStorage
 
 class CoachInput: UIViewController {
 
-  // var ref: DatabaseReference!
+   var clientDB: DatabaseReference!
 
-    //ref = Database.database().reference()
-
+   
+    
+    
+    
+    @IBOutlet weak var clientName: UITextField!
+    
+    @IBOutlet weak var clientEmail: UITextField!
+    
+    @IBOutlet weak var clientAge: UIPickerView!
+    
+    @IBOutlet weak var clientHeight: UIPickerView!
+    
+    @IBOutlet weak var clientShowDate: UIDatePicker!
+  
+    @IBOutlet weak var clientNotes: UITextField!
+    
+    @IBOutlet weak var saveClient: UIButton!
+    
+    var ref:  DatabaseReference!
+    
+    
     @IBAction func toCancel(_ sender: Any) {
         
         dismiss(animated: true, completion: nil)
     }
     
+    
+    
+    @IBAction func saveClient(_ sender: Any) {
+        
+        clientDB = Database.database(url: "https://myprepcoach-837c5-f207d.firebaseio.com/").reference()
+        
+        let userData = ["clientName": self.clientName.text! as String??, "clientEmail": self.clientEmail.text! as String, "clientHeight" : self.clientHeight.text! as String,"clientShowDate": self.clientShowDate as String] as [String : Any]
+        
+        self.ref.child("Clients").setValue (userData)
+        
+        print ("Client Add Successful")
+        
+            //if coachOrClient == "Coach" {
+        self.performSegue(withIdentifier: "toMessage", sender: nil)
+    }
 }
