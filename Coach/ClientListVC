@@ -7,52 +7,116 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseDatabase
+import FirebaseStorage
+import FirebaseCore
 
 class ClientListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
-    let clientList: [String] = ["Day 1", "Day 2", "Day 3", "Day 4"] //need to change this to get list from Firebase
+    var clientList = [String]()
+   // let clientList: [String] = ["Day 1", "Day 2", "Day 3", "Day 4"] //need to change this to get list from Firebase
     let colors = [UIColor.blue, UIColor.yellow, UIColor.magenta, UIColor.red]
-    let cellReuseIdentifier = "ClientCell"
+    let cellReuseIdentifier = "clientCell"
        
-       
-     //  @IBOutlet var WOtable: UITableView!
-       
+
+    
     @IBOutlet var ClientTable: UITableView!
     
+    
        override func viewDidLoad() {
-           super.viewDidLoad()
+        super.viewDidLoad()
            ClientTable.tableFooterView = UIView()
            ClientTable.rowHeight = 100
        
-             //  tableView.delegate = self
-               //tableView.dataSource = self
-       }
+        ClientTable.delegate = self
+        ClientTable.dataSource = self
+        
+        
+        
+        retrieveClientNames()
+        
+        
+        //----------------------------------to pull in data from FIREBASE------
+    /*    var ref: DatabaseReference
+        var handle: DatabaseHandle
+        
+            
+        ref = Database.database(url: "https://myprepcoach-837c5-f207d.firebaseio.com/").reference(withPath: "Clients")
+      
+        let user = Auth.auth().currentUser
+        
+        //let clientRef = ref.child(user!.uid).child
+        handle = (ref.child(user!.uid).observe(.childAdded, with: { (snapshot) in
+            
+            //code to execute when a child is added
+            let value = snapshot.value as? String //--NSDictionary
+            if let clientName = value {
+                
+                self.clientList.append(clientName)
+                
+            
+            }
+                
+        }))
+ */
+        
+        //-------------------------------------
+    }
+       
        
            
-         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-           
-           return self.clientList.count
+            print("The list has \(clientList.count).")
+           return clientList.count
        }
            
-         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
          
            let cell: ClientListTableCell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier) as! ClientListTableCell
            
-           //let imageName = UIImage(named: clientList[indexPath.row])
-           //var image: UIImage =
-          // cell.myImage.image = imageName
-           cell.clientLabel.text = self.clientList[indexPath.row]
+            cell.clientLabel.text = self.clientList[indexPath.row]
            //cell.myLabel.textAlignment = NSTextAlignment
         
-           
-           
           return cell
 
-        }
+                        }
        
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-           print("You tapped cell number \(indexPath.row).")
-       }
+           print("You tapped cell number \(indexPath.row).")}
+    
+    
+    func retrieveClientNames (){
+       
+        var ref: DatabaseReference
+        ref = Database.database(url: "https://myprepcoach-837c5-f207d.firebaseio.com/").reference()
+       
+        let userID = Auth.auth().currentUser?.uid
+        
+        let clientRef = ref.child("Clients").child(userID!)
 
+               clientRef.observeSingleEvent(of: .value, with: { (snapshot) in
+
+                   // Iterate through all of your positions
+                   for child in snapshot.children.allObjects as! [DataSnapshot] {
+
+                      let client = child
+                    
+                      let clientID = client.value as! [String: Any]
+
+                      let clientName = clientID["clientName"] as! String
+
+                      if clientName != nil {
+                         self.clientList.append(clientName)
+                      }
+                   }
+
+                   self.ClientTable.reloadData()
+        
+        })
+    }
+ 
 }
+
