@@ -19,6 +19,7 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
     let colors = [UIColor.blue, UIColor.yellow, UIColor.magenta, UIColor.red]
     let cellReuseIdentifier = "clientCell"
     var myIndex = 0
+    var textToBeSent: String = ""
 
     
     @IBOutlet var ClientTable: UITableView!
@@ -35,6 +36,8 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
         retrieveClientNames()
         
         getArrays()
+       // print("this is the client email list")
+       // print(clientEmailList)
         
     }
        
@@ -44,6 +47,7 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
 
             print("The list has \(clientList.count).")
            return clientList.count
+        
        }
            
 
@@ -61,10 +65,17 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
             
             myIndex = indexPath.row
+            textToBeSent = clientEmailList[myIndex]
+            
             performSegue(withIdentifier: "toClientDetail", sender: self)
             
            print("You tapped cell number \(indexPath.row)."
             )}
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let info = segue.destination as! ClientDetailViewController
+        info.myString = textToBeSent
+    }
     
     
     func retrieveClientNames (){
@@ -113,17 +124,23 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
                         // Iterate through all of your positions
                         for child in snapshot.children.allObjects as! [DataSnapshot] {
 
-                           let client = child
+                           let client1 = child
                          
-                           let clientID = client.value as! [String: Any]
+                           let clientID1 = client1.value as! [String: Any]
+ 
+                           let clientEmail1 = clientID1["clientWeight"] as! String
 
-                           let clientEmail = clientID["clientEmail"] as! String
-
-                           if clientEmail != nil {
-                              self.clientEmailList.append(clientEmail)
-                            
-                            }
+                          if clientEmail1 != nil {
+                              self.clientEmailList.append(clientEmail1)
+                           
+                            print(clientID1)
+                            print(clientEmail1)
+                            print("this is the list")
+                            print(self.clientEmailList)
+                           
+                           }
                         }
+                         self.ClientTable.reloadData()
                     })
     }
 }
