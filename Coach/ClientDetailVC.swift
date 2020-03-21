@@ -35,12 +35,17 @@ class ClientDetailViewController: UIViewController {
     var myIndex = 0
     
     var myString: String? = ""
-    
+    var ageString: String? = ""
+    var heightString: String? = ""
+    var weightString: String? = ""
+    var mealtypeString: String? = ""
+    var showdateString: String? = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
        // print(myIndex)
         emailLabel.text = myString
+        ageLabel.text = ageString
         //clientEmailList[myIndex]
         // Do any additional setup after loading the view.
     }
