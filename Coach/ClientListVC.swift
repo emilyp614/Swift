@@ -16,10 +16,20 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
 
     var clientList = [String]()
     var clientEmailList = [String]()
+    var clientAgeList = [String]()
+    var clientWeightList = [String]()
+    var clientHeightList = [String]()
+    var clientMealTypeList = [String]()
+    var clientShowDateList = [String]()
     let colors = [UIColor.blue, UIColor.yellow, UIColor.magenta, UIColor.red]
     let cellReuseIdentifier = "clientCell"
     var myIndex = 0
     var textToBeSent: String = ""
+    var ageToBeSent: String = ""
+    var weightToBeSent: String = ""
+    var heightToBeSent: String = ""
+    var mealTypeToBeSent: String = ""
+    var showdateToBeSent: String = ""
 
     
     @IBOutlet var ClientTable: UITableView!
@@ -66,6 +76,7 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
             
             myIndex = indexPath.row
             textToBeSent = clientEmailList[myIndex]
+            ageToBeSent = clientAgeList[myIndex]
             
             performSegue(withIdentifier: "toClientDetail", sender: self)
             
@@ -75,6 +86,7 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let info = segue.destination as! ClientDetailViewController
         info.myString = textToBeSent
+        info.ageString = ageToBeSent
     }
     
     
@@ -133,13 +145,24 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
                           if clientEmail1 != nil {
                               self.clientEmailList.append(clientEmail1)
                            
-                            print(clientID1)
-                            print(clientEmail1)
-                            print("this is the list")
-                            print(self.clientEmailList)
                            
                            }
                         }
+                        //get age data
+                        for child in snapshot.children.allObjects as! [DataSnapshot] {
+
+                              let client1 = child
+                            
+                              let clientID1 = client1.value as! [String: Any]
+    
+                              let clientAge = clientID1["clientAge"] as! String
+
+                             if clientAge != nil {
+                                 self.clientAgeList.append(clientAge)
+                                                  
+                          
+                          }
+                       }
                          self.ClientTable.reloadData()
                     })
     }
