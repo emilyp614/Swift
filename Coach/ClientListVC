@@ -15,10 +15,10 @@ import FirebaseCore
 class ClientListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     var clientList = [String]()
-   // let clientList: [String] = ["Day 1", "Day 2", "Day 3", "Day 4"] //need to change this to get list from Firebase
+    var clientEmailList = [String]()
     let colors = [UIColor.blue, UIColor.yellow, UIColor.magenta, UIColor.red]
     let cellReuseIdentifier = "clientCell"
-       
+    var myIndex = 0
 
     
     @IBOutlet var ClientTable: UITableView!
@@ -27,44 +27,18 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
        override func viewDidLoad() {
         super.viewDidLoad()
            ClientTable.tableFooterView = UIView()
-           ClientTable.rowHeight = 100
+           ClientTable.rowHeight = 50
        
         ClientTable.delegate = self
         ClientTable.dataSource = self
         
-        
-        
         retrieveClientNames()
         
+        getArrays()
         
-        //----------------------------------to pull in data from FIREBASE------
-    /*    var ref: DatabaseReference
-        var handle: DatabaseHandle
-        
-            
-        ref = Database.database(url: "https://myprepcoach-837c5-f207d.firebaseio.com/").reference(withPath: "Clients")
-      
-        let user = Auth.auth().currentUser
-        
-        //let clientRef = ref.child(user!.uid).child
-        handle = (ref.child(user!.uid).observe(.childAdded, with: { (snapshot) in
-            
-            //code to execute when a child is added
-            let value = snapshot.value as? String //--NSDictionary
-            if let clientName = value {
-                
-                self.clientList.append(clientName)
-                
-            
-            }
-                
-        }))
- */
-        
-        //-------------------------------------
     }
        
-       
+
            
         func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
@@ -85,7 +59,12 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
                         }
        
         func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-           print("You tapped cell number \(indexPath.row).")}
+            
+            myIndex = indexPath.row
+            performSegue(withIdentifier: "toClientDetail", sender: self)
+            
+           print("You tapped cell number \(indexPath.row)."
+            )}
     
     
     func retrieveClientNames (){
@@ -117,6 +96,34 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
         
         })
     }
- 
-}
+    
+   func getArrays() {
+            
+          
+            var ref: DatabaseReference
+             ref = Database.database(url: "https://myprepcoach-837c5-f207d.firebaseio.com/").reference()
+            
+             let userID = Auth.auth().currentUser?.uid
+             
+             let clientRef = ref.child("Clients").child(userID!)
 
+              //get the email list array
+                    clientRef.observeSingleEvent(of: .value, with: { (snapshot) in
+
+                        // Iterate through all of your positions
+                        for child in snapshot.children.allObjects as! [DataSnapshot] {
+
+                           let client = child
+                         
+                           let clientID = client.value as! [String: Any]
+
+                           let clientEmail = clientID["clientEmail"] as! String
+
+                           if clientEmail != nil {
+                              self.clientEmailList.append(clientEmail)
+                            
+                            }
+                        }
+                    })
+    }
+}
