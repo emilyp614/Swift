@@ -51,9 +51,13 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
        
+   func AddClientButtonTapped(_sender: UIBarButtonItem!){
+     
+    performSegue(withIdentifier: "addClientInfo", sender: self)
+   }
 
            
-        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
             print("The list has \(clientList.count).")
            return clientList.count
@@ -84,9 +88,11 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
             )}
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toClientDetail" {
         let info = segue.destination as! ClientDetailViewController
         info.myString = textToBeSent
         info.ageString = ageToBeSent
+        }
     }
     
     
