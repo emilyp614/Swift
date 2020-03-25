@@ -81,6 +81,7 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
             myIndex = indexPath.row
             textToBeSent = clientEmailList[myIndex]
             ageToBeSent = clientAgeList[myIndex]
+            weightToBeSent = clientWeightList[myIndex]
             
             performSegue(withIdentifier: "toClientDetail", sender: self)
             
@@ -92,6 +93,7 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
         let info = segue.destination as! ClientDetailViewController
         info.myString = textToBeSent
         info.ageString = ageToBeSent
+        info.weightString = weightToBeSent
         }
     }
     
@@ -165,6 +167,38 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
 
                              if clientAge != nil {
                                  self.clientAgeList.append(clientAge)
+                                                  
+                          
+                          }
+                       }
+                        
+                        //get weight data
+                            for child in snapshot.children.allObjects as! [DataSnapshot] {
+
+                                  let client1 = child
+                                
+                                  let clientID1 = client1.value as! [String: Any]
+        
+                                  let clientWeight = clientID1["clientWeight"] as! String
+
+                                 if clientWeight != nil {
+                                     self.clientWeightList.append(clientWeight)
+                                                      
+                              
+                              }
+                           }
+                        
+                    //get height data
+                        for child in snapshot.children.allObjects as! [DataSnapshot] {
+
+                              let client1 = child
+                            
+                              let clientID1 = client1.value as! [String: Any]
+    
+                              let clientHeight = clientID1["clientHeight"] as! String
+
+                             if clientHeight != nil {
+                                 self.clientHeightList.append(clientHeight)
                                                   
                           
                           }
