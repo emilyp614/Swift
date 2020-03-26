@@ -18,19 +18,24 @@ class CoachInput: UIViewController {
 
    var clientDB: DatabaseReference!
 
+    var custChildAutoID: String = ""
+    
+
 
     @IBOutlet weak var clientName: UITextField!
     
     @IBOutlet weak var clientEmail: UITextField!
     
-    @IBOutlet weak var clientAge: UIPickerView!
     
-    @IBOutlet weak var clientHeight: UIPickerView!
+    @IBOutlet weak var clientAge: UITextField!
+    
+    @IBOutlet weak var clientHeight: UITextField!
     
     @IBOutlet weak var clientWeight: UITextField!
     
+    
     @IBOutlet weak var clientShowDate: UIDatePicker!
-  
+    
     @IBOutlet weak var clientNotes: UITextField!
     
     @IBOutlet weak var saveClient: UIButton!
@@ -49,24 +54,38 @@ class CoachInput: UIViewController {
         
         clientDB = Database.database(url: "https://myprepcoach-837c5-f207d.firebaseio.com/").reference()
         
-     
-        //need to fix this so it doesnt override every time
-    //    let clientEmailID = ["clientEmail": self.clientEmail.text! as String]
         
         let userData = ["clientName": self.clientName.text! as String,
                         "clientEmail": self.clientEmail.text! as String,
-                        "clientWeight":  self.clientWeight.text! as String,
-                        "clientNotes": self.clientNotes.text! as String
-            //, "clientHeight" : self.clientHeight.UILabel! as String,
+                        "clientWeight": self.clientWeight.text! as String,
+                        "clientNotes": self.clientNotes.text! as String,
+                        "clientHeight": self.clientHeight.text! as String,
+                        "clientAge": self.clientAge.text! as String
             //"clientShowDate": self.clientShowDate as String
             ] as [String : Any]
         
-        //need to fix so knows to save to specific client
-        (self.clientDB.child("Clients").childByAutoId() as AnyObject).setValue(userData)
+     //need to add in another child for each specific coach!
+        let userID = Auth.auth().currentUser?.uid
+        
+        var userRef = self.clientDB.child("Clients").child(userID!).childByAutoId()
+            
+        userRef.setValue(userData)
         
         print ("Client Add Successful")
-        
+        var custChildAutoID = userRef.key
+        print(custChildAutoID)
            
         self.performSegue(withIdentifier: "toClientList", sender: nil)
+        
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+         if segue.identifier == "chooseMeals" {
+         let info = segue.destination as! ClientDetailViewController
+         info.myString = custChildAutoID
+         
+             
+         }
+     }
+    
 }
+

@@ -82,6 +82,7 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
             textToBeSent = clientEmailList[myIndex]
             ageToBeSent = clientAgeList[myIndex]
             weightToBeSent = clientWeightList[myIndex]
+            heightToBeSent = clientHeightList[myIndex]
             
             performSegue(withIdentifier: "toClientDetail", sender: self)
             
@@ -94,6 +95,8 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
         info.myString = textToBeSent
         info.ageString = ageToBeSent
         info.weightString = weightToBeSent
+        info.heightString = heightToBeSent
+            
         }
     }
     
@@ -161,9 +164,9 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
 
                               let client1 = child
                             
-                              let clientID1 = client1.value as! [String: Any]
+                              let clientID2 = client1.value as! [String: Any]
     
-                              let clientAge = clientID1["clientAge"] as! String
+                              let clientAge = clientID2["clientAge"] as! String
 
                              if clientAge != nil {
                                  self.clientAgeList.append(clientAge)
@@ -177,9 +180,9 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
 
                                   let client1 = child
                                 
-                                  let clientID1 = client1.value as! [String: Any]
+                                  let clientID3 = client1.value as! [String: Any]
         
-                                  let clientWeight = clientID1["clientWeight"] as! String
+                                  let clientWeight = clientID3["clientWeight"] as! String
 
                                  if clientWeight != nil {
                                      self.clientWeightList.append(clientWeight)
@@ -193,9 +196,9 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
 
                               let client1 = child
                             
-                              let clientID1 = client1.value as! [String: Any]
+                              let clientID4 = client1.value as! [String: Any]
     
-                              let clientHeight = clientID1["clientHeight"] as! String
+                              let clientHeight = clientID4["clientHeight"] as! String
 
                              if clientHeight != nil {
                                  self.clientHeightList.append(clientHeight)

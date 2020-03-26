@@ -35,6 +35,7 @@ class ClientDetailViewController: UIViewController {
     var myIndex = 0
     
     var myString: String? = ""
+    var nameString: String? = ""
     var ageString: String? = ""
     var heightString: String? = ""
     var weightString: String? = ""
@@ -46,6 +47,9 @@ class ClientDetailViewController: UIViewController {
        // print(myIndex)
         emailLabel.text = myString
         ageLabel.text = ageString
+        weightLabel.text = weightString
+        heightLabel.text = heightString
+        nameLabel.text = nameString
         //clientEmailList[myIndex]
         // Do any additional setup after loading the view.
     }
