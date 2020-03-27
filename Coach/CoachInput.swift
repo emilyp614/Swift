@@ -66,19 +66,20 @@ class CoachInput: UIViewController {
         
      //need to add in another child for each specific coach!
         let userID = Auth.auth().currentUser?.uid
-        
-        var userRef = self.clientDB.child("Clients").child(userID!).childByAutoId()
-            
+        let clientEmailID  = self.clientEmail.text! as String
+        let cleanEmail = clientEmailID.replacingOccurrences(of: ".", with: ",")
+        //let userRef = self.clientDB.child("Clients").child(userID!).childByAutoId()
+        let userRef = self.clientDB.child("Clients").child(userID!).child(cleanEmail)
         userRef.setValue(userData)
         
         print ("Client Add Successful")
-        var custChildAutoID = userRef.key
-        print(custChildAutoID)
+        var custChildID = userRef.key
+        print(custChildID)
            
         self.performSegue(withIdentifier: "toClientList", sender: nil)
         
     }
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+  /*  override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
          if segue.identifier == "chooseMeals" {
          let info = segue.destination as! ClientDetailViewController
          info.myString = custChildAutoID
@@ -87,5 +88,7 @@ class CoachInput: UIViewController {
          }
      }
     
+ */
 }
 
+//https://stackoverflow.com/questions/49134297/send-an-email-verfication-email-to-a-new-firebase-user-in-swift

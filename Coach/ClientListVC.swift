@@ -30,6 +30,7 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
     var heightToBeSent: String = ""
     var mealTypeToBeSent: String = ""
     var showdateToBeSent: String = ""
+    var nameToBeSent: String = ""
 
     
     @IBOutlet var ClientTable: UITableView!
@@ -83,6 +84,7 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
             ageToBeSent = clientAgeList[myIndex]
             weightToBeSent = clientWeightList[myIndex]
             heightToBeSent = clientHeightList[myIndex]
+            nameToBeSent = clientList[myIndex]
             
             performSegue(withIdentifier: "toClientDetail", sender: self)
             
@@ -96,6 +98,7 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
         info.ageString = ageToBeSent
         info.weightString = weightToBeSent
         info.heightString = heightToBeSent
+        info.nameString = nameToBeSent
             
         }
     }
@@ -151,7 +154,7 @@ class ClientListViewController: UIViewController, UITableViewDelegate, UITableVi
                          
                            let clientID1 = client1.value as! [String: Any]
  
-                           let clientEmail1 = clientID1["clientWeight"] as! String
+                           let clientEmail1 = clientID1["clientEmail"] as! String
 
                           if clientEmail1 != nil {
                               self.clientEmailList.append(clientEmail1)
